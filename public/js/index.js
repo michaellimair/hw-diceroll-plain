@@ -5,126 +5,117 @@ function getDiceImage() {
   switch (randomNumber) {
     case 1:
       return ({
-        gif: "./images/truth_compress.gif"
+        name: "truth",
+        gif: "./images/truth_compress.gif",
+        start: 168,
+        end: 204,
       });
     case 2:
       return ({
-        gif: "./images/one_shot_compress.gif"
+        name: "one_shot",
+        gif: "./images/one_shot_compress.gif",
+        start: 79,
+        end: 117,
       });
     case 3:
       return ({
-        gif: "./images/pass_compress.gif"
+        name: "pass",
+        gif: "./images/pass_compress.gif",
+        start: 118,
+        end: 156,
       });
     case 4:
       return ({
-        gif: "./images/one_other_shot_compress.gif"
+        name: "one_other_shot",
+        gif: "./images/one_other_shot_compress.gif",
+        start: 40,
+        end: 78,
       });
     case 5:
       return ({
-        gif: "./images/two_shots_compress.gif"
+        name: "two_shots",
+        gif: "./images/two_shots_compress.gif",
+        start: 205,
+        end: 243,
       });
     case 6:
       return ({
-        gif: "./images/dare_compress.gif"
+        name: "dare",
+        gif: "./images/dare_compress.gif",
+        start: 1,
+        end: 39,
       });
     default:
-      return null;
+      return ({
+        name: "tap_to_start",
+        gif: "./images/tap_to_start_compress.gif",
+        start: 157,
+        end: 167,
+      });
   }
 }
+
+var diceInterval = null;
+var sup1 = null;
 
 function generateRandomNumber() {
   randomNumber = Math.floor(Math.random() * 6) + 1;
 }
 
 function change_dice() {
-  // Disable change dice while the dice is loading
-  document.querySelector("#root").onclick = function () {}
-  document.querySelector("#dice_image_root").style.cursor = "default";
-
-  // Remove all elements inside the dice image container
-  var rootNode = document.querySelector("#dice_image_root");
-  while (rootNode.firstChild) {
-    rootNode.removeChild(rootNode.lastChild);
+  if (diceInterval !== null) {
+    clearInterval(diceInterval);
   }
+  generateRandomNumber();
+  var newDiceImage = getDiceImage();
+  var newDiceImageStartFrame = newDiceImage.start;
+  var newDiceImageEndFrame = newDiceImage.end - 2;
 
-  // Display loading spinner
-  document.querySelector("#spinner-container").style.display = "block";
-  sup1 = null;
+  sup1.move_to(newDiceImageStartFrame);
+  sup1.play();
 
-  setTimeout(function () {
-    generateRandomNumber();
-    var newDiceImage = getDiceImage();
-    var newDiceImageGif = newDiceImage.gif;
-
-    // Create new image element with the new GIF image according to the generated random number
-    var imageElement = document.createElement("img");
-    imageElement.src = newDiceImageGif;
-    imageElement['rel:animated_src'] = newDiceImageGif;
-    imageElement['rel:auto_play'] = "1";
-    imageElement.width="auto";
-    imageElement.height="100%";
-    imageElement.id = "dice_image_container";
-    document.querySelector("#dice_image_root").appendChild(imageElement);
-
-    // Turn the newly created image element to a SuperGif object to allow manipulation
-    imageElement.onload = function() {
-      sup1 = new SuperGif({
-        loop_mode: false,
-        gif: document.getElementById('dice_image_container'),
-        draw_while_loading: false
-      } );
-      sup1.load(onImageLoaded);
+  diceInterval = setInterval(function() {
+    if (sup1.get_current_frame() >= newDiceImageEndFrame) {
+      sup1.pause();
+      clearTimeout(diceInterval);
     }
-  }, 100);
-}
-
-function preloadImage(url, anImageLoadedCallback){
-  var img = new Image();
-  img.onload = anImageLoadedCallback;
-  img.src = url;
-}
-
-function preloadImages(urls, allImagesLoadedCallback){
-  var loadedCounter = 0;
-  var toBeLoadedNumber = urls.length;
-  urls.forEach(function(url){
-    preloadImage(url, function(){
-        loadedCounter++;
-            console.log('Number of loaded images: ' + loadedCounter);
-      if(loadedCounter == toBeLoadedNumber){
-        allImagesLoadedCallback();
-      }
-    });
-  });
+  }, 0);
 }
 
 function onImageLoaded () {
   image_loaded = true;
+  if (diceInterval !== null) {
+    clearInterval(diceInterval);
+  }
+  // Hide existing loading spinner and display image instead
   document.querySelector("#dice_image_root").style.display = "block";
   document.querySelector("#dice_image_root").style.cursor = "pointer";
   document.querySelector("#spinner-container").style.display = "none";
   document.querySelector(".jsgif").onclick = change_dice;
+
+  var defaultImage = getDiceImage(); // Since dice value is -1 by default, this will return the tap to start animation
+  var defaultImageStart = defaultImage.start;
+  var defaultImageEnd = defaultImage.end - 2;
+
+  sup1.move_to(defaultImageStart);
+  sup1.play();
+
+  diceInterval = setInterval(function() {
+    if (sup1.get_current_frame() >= defaultImageEnd) {
+      sup1.pause();
+      clearTimeout(diceInterval);
+    }
+  }, 0);
 }
 
 window.onload = function() {
-  // Preload all GIF images
-  preloadImages([
-    "./images/tap_to_start_compress.gif",
-    "./images/truth_compress.gif",
-    "./images/one_shot_compress.gif",
-    "./images/pass_compress.gif",
-    "./images/one_other_shot_compress.gif",
-    "./images/two_shots_compress.gif",
-    "./images/dare_compress.gif",
-  ], function () {
-    var sup1 = new SuperGif({
-      loop_mode: false,
-      gif: document.getElementById('dice_image_container'),
-      draw_while_loading: false
-    });
-    document.querySelector("#dice_image_root").style.cursor = "default";
-    sup1.load(function() {
-      onImageLoaded();
-    });
+  sup1 = new SuperGif({
+    loop_mode: false,
+    gif: document.getElementById('dice_image_container'),
+    draw_while_loading: false
+  });
+  document.querySelector("#dice_image_root").style.cursor = "default";
+  sup1.load(function() {
+    onImageLoaded();
   });
 }
