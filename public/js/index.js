@@ -79,7 +79,7 @@ function change_dice() {
       sup1.pause();
       clearTimeout(diceInterval);
     }
-  }, 0);
+  }, 8);
 }
 
 function onImageLoaded () {
@@ -96,7 +96,7 @@ function onImageLoaded () {
 
   var defaultImage = getDiceImage(); // Since dice value is -1 by default, this will return the tap to start animation
   var defaultImageStart = defaultImage.start;
-  var defaultImageEnd = defaultImage.end - 3;
+  var defaultImageEnd = defaultImage.end - 4;
 
   sup1.move_to(defaultImageStart);
   sup1.play();
@@ -106,7 +106,7 @@ function onImageLoaded () {
       sup1.pause();
       clearTimeout(diceInterval);
     }
-  }, 0);
+  }, 8);
 }
 
 window.onload = function() {
