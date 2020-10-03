@@ -69,7 +69,7 @@ function change_dice() {
   generateRandomNumber();
   var newDiceImage = getDiceImage();
   var newDiceImageStartFrame = newDiceImage.start;
-  var newDiceImageEndFrame = newDiceImage.end - 2;
+  var newDiceImageEndFrame = newDiceImage.end - 3;
 
   sup1.move_to(newDiceImageStartFrame);
   sup1.play();
@@ -90,12 +90,13 @@ function onImageLoaded () {
   // Hide existing loading spinner and display image instead
   document.querySelector("#dice_image_root").style.display = "block";
   document.querySelector("#dice_image_root").style.cursor = "pointer";
-  document.querySelector("#spinner-container").style.display = "none";
+  document.querySelector("#dice-hider").style.display = "none";
+  document.querySelector("#root").style['align-items'] = "center";
   document.querySelector(".jsgif").onclick = change_dice;
 
   var defaultImage = getDiceImage(); // Since dice value is -1 by default, this will return the tap to start animation
   var defaultImageStart = defaultImage.start;
-  var defaultImageEnd = defaultImage.end - 2;
+  var defaultImageEnd = defaultImage.end - 3;
 
   sup1.move_to(defaultImageStart);
   sup1.play();
@@ -112,7 +113,10 @@ window.onload = function() {
   sup1 = new SuperGif({
     loop_mode: false,
     gif: document.getElementById('dice_image_container'),
-    draw_while_loading: false
+    draw_while_loading: true,
+    show_progress_bar: true,
+    progressbar_foreground_color: "#ff5b0f",
+    progressbar_background_color: "black",
   });
   document.querySelector("#dice_image_root").style.cursor = "default";
   sup1.load(function() {
