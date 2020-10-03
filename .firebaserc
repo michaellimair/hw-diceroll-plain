@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "michaellimair-random-scripts"
+  },
+  "targets": {
+    "michaellimair-random-scripts": {
+      "hosting": {
+        "hw-diceroll-plain": [
+          "hw-diceroll-plain"
+        ]
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "target": "hw-diceroll-plain",
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
