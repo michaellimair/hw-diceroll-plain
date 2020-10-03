@@ -14,35 +14,35 @@ function getDiceImage() {
       return ({
         name: "one_shot",
         gif: "./images/one_shot_compress.gif",
-        start: 79,
+        start: 81,
         end: 117,
       });
     case 3:
       return ({
         name: "pass",
         gif: "./images/pass_compress.gif",
-        start: 118,
+        start: 120,
         end: 156,
       });
     case 4:
       return ({
         name: "one_other_shot",
         gif: "./images/one_other_shot_compress.gif",
-        start: 40,
+        start: 42,
         end: 78,
       });
     case 5:
       return ({
         name: "two_shots",
         gif: "./images/two_shots_compress.gif",
-        start: 205,
+        start: 207,
         end: 243,
       });
     case 6:
       return ({
         name: "dare",
         gif: "./images/dare_compress.gif",
-        start: 1,
+        start: 3,
         end: 39,
       });
     default:
@@ -89,10 +89,10 @@ function onImageLoaded () {
   }
   // Hide existing loading spinner and display image instead
   document.querySelector("#dice_image_root").style.display = "block";
-  document.querySelector("#dice_image_root").style.cursor = "pointer";
   document.querySelector("#dice-hider").style.display = "none";
   document.querySelector("#root").style['align-items'] = "center";
-  document.querySelector(".jsgif").onclick = change_dice;
+  document.querySelector("#root").style.cursor = "pointer";
+  document.querySelector("#root").onclick = change_dice;
 
   var defaultImage = getDiceImage(); // Since dice value is -1 by default, this will return the tap to start animation
   var defaultImageStart = defaultImage.start;
@@ -118,7 +118,7 @@ window.onload = function() {
     progressbar_foreground_color: "#ff5b0f",
     progressbar_background_color: "black",
   });
-  document.querySelector("#dice_image_root").style.cursor = "default";
+  document.querySelector("#root").style.cursor = "default";
   sup1.load(function() {
     onImageLoaded();
   });
