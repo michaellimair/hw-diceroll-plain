@@ -1,5 +1,6 @@
 *, html, body {
   margin: 0;
+  font-family: 'Maven Pro', sans-serif;
   padding: 0;
 }
 
@@ -26,4 +27,15 @@ html, body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+#message-container {
+  position: absolute;
+  bottom: 20%;
+  width: calc(100% - 32px);
+  padding: 8px;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  font-size: 1.4rem;
 }

@@ -55,6 +55,23 @@ function getDiceImage() {
   }
 }
 
+function getMessage() {
+  switch (randomNumber) {
+    case 1:
+      return "Truth";
+    case 6:
+      return "Dare";
+    case 2:
+      return "Take 1 Shot";
+    case 5:
+      return "Take 2 Shots";
+    case 3:
+      return "Pass";
+    case 4:
+      return "Choose 1 person to drink 1 shot OR<br> all players take 1 shot"
+  }
+}
+
 var diceInterval = null;
 var sup1 = null;
 
@@ -70,6 +87,8 @@ function change_dice() {
   var newDiceImage = getDiceImage();
   var newDiceImageStartFrame = newDiceImage.start;
   var newDiceImageEndFrame = newDiceImage.end - 3;
+  document.querySelector("#message-container").style.display = "none";
+  document.querySelector("#message-container").innerHTML = getMessage();
 
   sup1.move_to(newDiceImageStartFrame);
   sup1.play();
@@ -77,6 +96,7 @@ function change_dice() {
   diceInterval = setInterval(function() {
     if (sup1.get_current_frame() >= newDiceImageEndFrame) {
       sup1.pause();
+      document.querySelector("#message-container").style.display = "block";
       clearTimeout(diceInterval);
     }
   }, 8);
@@ -87,6 +107,7 @@ function onImageLoaded () {
   if (diceInterval !== null) {
     clearInterval(diceInterval);
   }
+  document.querySelector("#message-container").innerHTML = "Tap to Start";
   // Hide existing loading spinner and display image instead
   document.querySelector("#dice_image_root").style.display = "block";
   document.querySelector("#dice-hider").style.display = "none";
